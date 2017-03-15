@@ -1,0 +1,44 @@
+/**************************************************************************/
+//  Richard Bromley 5001075854
+//  CS 370 1001 Assignment 4//
+//  Peterson Leader Election: Using threads with shared memory locations
+//
+//
+//
+//  Location of file: Assignment4
+/**************************************************************************/
+#include "project4a.h"
+
+int main(int argc, char *argv[]) {
+    struct Radio *firstNode;
+    int address = 0;
+    char semaphoreString[6];
+    
+ 	//count of nodes
+    scanf("%d",&nodeCount);    
+    pthread_t Channelthread[nodeCount];
+    
+    	// create all the radios needed
+    firstNode = (struct Radio *) malloc(nodeCount * sizeof (struct Radio));
+    
+    while(address < nodeCount) {
+        scanf("%d",&(firstNode + address)->uid);
+	(firstNode + address)->buffer = 0;
+        
+	channel[address] = (firstNode + address);
+        loaded = FALSE;
+
+        while (sem_init(&(firstNode + address)->SYN,2,0) < 0) { }
+	while (sem_init(&(firstNode + address)->TRANSMITTER,2,1) < 0) { }
+ 
+	pthread_create(&Channelthread[address],NULL,Channel,&address);
+
+	while (loaded == FALSE) { } //wait for channel construction
+        ++address;
+    }
+    allLoaded = TRUE;
+
+    while(leader == 0){ }
+    printf("leader: %d \n",leader);
+    return 0;
+}
